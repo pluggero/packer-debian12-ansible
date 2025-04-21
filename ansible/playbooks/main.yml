@@ -1,0 +1,17 @@
+---
+- name: Debian provisioning
+  hosts: all
+  gather_facts: true
+
+  vars:
+    virtualbox_guest_reboot: false
+    user_setup_users:
+      - name: "{{ ansible_user }}"
+        shell: "/bin/bash"
+        ssh_setup: true
+        ssh_directory: ".ssh"
+        ssh_public_keys: "{{ user_setup_ssh_public_keys | default([]) }}"
+
+  roles:
+    - pluggero.virtualbox_guest
+    - pluggero.user_setup
