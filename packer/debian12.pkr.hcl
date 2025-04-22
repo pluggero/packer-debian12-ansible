@@ -49,22 +49,22 @@ build {
 
   provisioner "shell" {
     execute_command = "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
-    script = "scripts/ansible.sh"
+    script = "${path.root}/scripts/ansible.sh"
   }
 
   provisioner "shell" {
     execute_command = "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
-    script = "scripts/setup.sh"
+    script = "${path.root}/scripts/setup.sh"
   }
 
   provisioner "ansible-local" {
-    playbook_file = "ansible/playbooks/main.yml"
-    galaxy_file = "ansible/requirements.yml"
+    playbook_file = "${path.root}/../ansible/playbooks/main.yml"
+    galaxy_file = "${path.root}/../ansible/requirements.yml"
   }
 
   provisioner "shell" {
     execute_command = "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
-    script = "scripts/cleanup.sh"
+    script = "${path.root}/scripts/cleanup.sh"
   }
 
   post-processors {
