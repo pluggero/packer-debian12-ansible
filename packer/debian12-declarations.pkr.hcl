@@ -17,7 +17,6 @@ local "http_directory" {
 # Virtual Machine Settings
 
 locals { 
-  vm_name = "debian-${var.vm_guest_os_version}"
   vm_nonroot_shutdown_command = "echo '${var.vm_ssh_password}'|sudo -S shutdown -P now"
 } 
 
@@ -40,7 +39,7 @@ local "debian_boot_command_x86_64" {
 # VirtualBox Settings
 
 locals {
-    vbox_output_name = "${local.vm_name}-virtualbox-${formatdate("YYYYMMDD", timestamp())}-x86_64"
+    vbox_output_name = "${var.vm_name}-virtualbox-x86_64"
     vbox_post_shared_folder_path_full = "${ var.HOME }/${ var.vbox_post_shared_folder_path }"
 }
 
@@ -57,6 +56,12 @@ variable "HOME" {
 }
 
 # Virtual Machine Settings
+variable "vm_name" {
+  description = "Name of the VM"
+  type = string
+  default = ""
+}
+
 variable "vm_guest_os_version" {
   description = "Version of guest os to install"
   type = string

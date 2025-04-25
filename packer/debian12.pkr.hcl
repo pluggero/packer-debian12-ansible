@@ -2,7 +2,7 @@
 # SOURCES
 ##################################################################################
 source "virtualbox-iso" "debian12" {
-  vm_name              = "${local.vm_name}"
+  vm_name              = "${var.vm_name}"
   iso_url              = local.debian_iso_url_x86_64
   iso_checksum         = local.debian_iso_checksum_x86_64
   iso_target_path      = "${path.root}/inputs/${local.debian_iso_name_x86_64}"
@@ -27,12 +27,7 @@ source "virtualbox-iso" "debian12" {
   vboxmanage_post      = [
     ["modifyvm", "{{.Name}}", "--memory", var.vbox_post_mem_size],
     ["modifyvm", "{{.Name}}", "--cpus", var.vbox_post_cpu_core],
-    ["modifyvm", "{{.Name}}", "--uartmode1", "disconnected"],
-    ["modifyvm", "{{.Name}}", "--graphicscontroller", var.vbox_post_graphics],
-    ["modifyvm", "{{.Name}}", "--vram", var.vbox_post_vram],
-    ["modifyvm", "{{.Name}}", "--accelerate-3d", var.vbox_post_accelerate_3d],
     ["modifyvm", "{{.Name}}", "--clipboard-mode", var.vbox_post_clipboard_mode],
-    ["modifyvm", "{{.Name}}", "--nic1", "bridged", "--bridgeadapter1", var.vbox_post_bridged_adapter],
   ]
 }
 
@@ -49,17 +44,28 @@ build {
 
   provisioner "shell" {
     execute_command = "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
-    script = "${path.root}/scripts/ansible.sh"
-  }
-
-  provisioner "shell" {
-    execute_command = "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
     script = "${path.root}/scripts/setup.sh"
   }
 
-  provisioner "ansible-local" {
-    playbook_file = "${path.root}/../ansible/playbooks/main.yml"
-    galaxy_file = "${path.root}/../ansible/requirements.yml"
+  provisioner "ansible" {
+    galaxy_file          = "${path.root}/../ansible/requirements.yml"
+    galaxy_force_install = true
+    collections_path     = "${path.root}/../ansible/collections"
+    roles_path           = "${path.root}/../ansible/roles"
+    playbook_file        = "${path.root}/../ansible/playbooks/main.yml"
+    user                 = "${var.vm_ssh_username}"
+    ansible_env_vars = [ 
+      # To enable piplining, you have to edit sudoers file
+      # See:https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
+      # "ANSIBLE_PIPELINING=true",
+      "ANSIBLE_ROLES_PATH=${path.root}/../ansible/roles",
+      "ANSIBLE_FORCE_COLOR=true",
+      "ANSIBLE_HOST_KEY_CHECKING=false",
+    ]
+    extra_arguments = [
+      "--extra-vars",
+      "ansible_become_password=${var.vm_ssh_password}",
+    ]
   }
 
   provisioner "shell" {
@@ -70,14 +76,14 @@ build {
   post-processors {
     post-processor "artifice" {
       files = [
-        "${path.root}/outputs/${local.vbox_output_name}/${local.vm_name}-disk001.vmdk",
-        "${path.root}/outputs/${local.vbox_output_name}/${local.vm_name}.ovf"
+        "${path.root}/outputs/${local.vbox_output_name}/${var.vm_name}-disk001.vmdk",
+        "${path.root}/outputs/${local.vbox_output_name}/${var.vm_name}.ovf"
       ]
     }
     post-processor "vagrant" {
       keep_input_artifact = true
       provider_override   = "virtualbox"
-      output = "${path.root}/outputs/${local.vbox_output_name}/${local.vm_name}-virtualbox.box"
+      output = "${path.root}/outputs/${local.vbox_output_name}/${var.vm_name}-virtualbox.box"
     }
   }
 
