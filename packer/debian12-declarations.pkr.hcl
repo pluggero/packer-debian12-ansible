@@ -24,22 +24,26 @@ locals {
 # for uefi boot to work: "vga=788 noprompt fb=false quiet --<enter>"
 local "debian_boot_command_x86_64" {
   expression = [
-    "<wait><wait><wait><esc><wait><wait><wait>",
-    "/install.amd/vmlinuz ",
+    "<esc><wait>",
+    "auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+    "debian-installer=en_US ",
+    "locale=en_US ",
+    "kbd-chooser/method=us ",
+    "hostname={{ .Name }} ",
+    "fb=false ",
+    "debconf/frontend=noninteractive ",
+    "keyboard-configuration/modelcode=pc105 ",
+    "keyboard-configuration/layout=us ",
+    "keyboard-configuration/variant=us ",
     "initrd=/install.amd/initrd.gz ",
-    "auto=true ",
-    "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
-    "hostname=debian ",
-    "domain='' ",
-    "interface=auto ",
-    "vga=788 noprompt quiet --<enter>"
+    "--- <enter>"
   ]
 }
 
 # VirtualBox Settings
 
 locals {
-    vbox_output_name = "${var.vm_name}-virtualbox-x86_64"
+    vbox_output_name = "${var.vm_name}-virtualbox-amd64"
     vbox_post_shared_folder_path_full = "${ var.HOME }/${ var.vbox_post_shared_folder_path }"
 }
 

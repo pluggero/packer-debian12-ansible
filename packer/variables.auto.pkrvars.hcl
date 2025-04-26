@@ -11,7 +11,7 @@ vm_mem_size                         = 4096
 vm_root_shutdown_command            = "/sbin/shutdown -hP now"
 vm_disk_size                        = 60000
 vm_ssh_port                         = 22
-vm_ssh_timeout                      = "3600s"
+vm_ssh_timeout                      = "1800s"
 vm_ssh_username                     = "vagrant"
 vm_ssh_password                     = "vagrant"
 

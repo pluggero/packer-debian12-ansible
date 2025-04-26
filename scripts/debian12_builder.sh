@@ -2,6 +2,9 @@
 # Change to the repository root directory
 cd "$(dirname "$0")"/..
 
+# Initialize Packer (downloads plugins, etc.)
+packer init packer/
+
 # Run the Packer build and capture the exit code
 packer build -force -on-error=ask packer/
 PACKER_EXIT_CODE=$?
