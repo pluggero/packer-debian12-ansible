@@ -15,7 +15,7 @@
 
 ### Installation
 
-- Take a look at https://portal.cloud.hashicorp.com/vagrant/discover/pluggero/debian12 to get started with the Vagrant box.
+- Take a look at https://portal.cloud.hashicorp.com/vagrant/discover/pluggero/debian12-ansible to get started with the Vagrant box.
 
 ## Creating your own box
 

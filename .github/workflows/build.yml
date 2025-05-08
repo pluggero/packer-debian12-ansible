@@ -174,7 +174,7 @@ jobs:
             echo "Version does not exist. Creating version '$VERSION'..."
             curl --silent --fail --request POST --header "Authorization: Bearer $ACCESS_TOKEN" \
               --header "Content-Type: application/json" \
-              --data '{"name":"'"$VERSION"'","description":"'"${{ steps.tag_message.outputs.tag_message }}"'","provider_names":["'"$PROVIDER"'"]}' \
+              --data '{"name":"'"$VERSION"'","description":"'"${{ steps.tag_message.outputs.tag_message }}"' (VirtualBox version: '"$VBOX_VERSION"')","provider_names":["'"$PROVIDER"'"]}' \
               "https://api.cloud.hashicorp.com/vagrant/2022-09-30/registry/${REGISTRY}/box/${BOX_NAME}/versions" | jq .
             echo "Version created."
 

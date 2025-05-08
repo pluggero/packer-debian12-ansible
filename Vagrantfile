@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   # VirtualBox.
   config.vm.define "virtualbox" do |virtualbox|
     virtualbox.vm.hostname = "virtualbox-debian12"
-    virtualbox.vm.box = "file://packer/outputs/debian12-virtualbox-x86_64/debian12-virtualbox.box"
+    virtualbox.vm.box = "file://packer/outputs/debian12-virtualbox-amd64/debian12-virtualbox.box"
 
     config.vm.provider :virtualbox do |v|
       v.gui = false
