@@ -9,7 +9,8 @@ on:
 env:
   PACKER_OUTPUT: packer/outputs/debian12-virtualbox-amd64/debian12-virtualbox.box
   REGISTRY: pluggero
-  BOX_NAME: debian12
+  BOX_NAME: debian12-ansible
+  SHORT_DESCRIPTION: Debian12 Vagrant box for Ansible Role Testing.
   PROVIDER: virtualbox
   ARCHITECTURE: amd64
   VBOX_BRANCH: "7.1"
@@ -156,7 +157,7 @@ jobs:
             echo "Box does not exist. Creating box '$BOX_NAME'..."
             curl --silent --fail --request POST --header "Authorization: Bearer $ACCESS_TOKEN" \
               --header "Content-Type: application/json" \
-              --data '{"name":"'"$BOX_NAME"'","description":"Debian 12 Vagrant box for Ansible Role Testing.","short_description":"Debian 12 Vagrant box for Ansible Role Testing.\n'"$REPO_URL"'","is_private":false}' \
+              --data '{"name":"'"$BOX_NAME"'","description":"'"$REPO_URL"'","short_description":"'"$SHORT_DESCRIPTION"'","is_private":false}' \
               "https://api.cloud.hashicorp.com/vagrant/2022-09-30/registry/${REGISTRY}/boxes" | jq .
             echo "Box created."
           else
