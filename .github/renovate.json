@@ -61,7 +61,7 @@
     },
     {
       "matchDatasources": ["custom.debian-installer"],
-      "extractVersion": "/<a href=\"(.*?debian-(?<version>.+)-amd64-netinst\\.iso)\"",
+      "extractVersion": "/debian-(?<version>.+)-amd64-netinst\\.iso)",
       "groupName": "Update Debian Installer version"
     }
   ]
