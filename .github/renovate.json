@@ -39,7 +39,8 @@
       ],
       "datasourceTemplate": "custom.debian-installer",
       "depNameTemplate": "debian-installer",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "semver",
+      "extractVersionTemplate": "/debian-(?<version>.+)-amd64-netinst\\.iso"
     }
   ],
   "customDatasources": {
@@ -58,11 +59,6 @@
         "virtualbox"
       ],
       "groupName": "Update Virtualbox version"
-    },
-    {
-      "matchDatasources": ["custom.debian-installer"],
-      "extractVersion": "/debian-(?<version>.+)-amd64-netinst\\.iso",
-      "groupName": "Update Debian Installer version"
     }
   ]
 }
