@@ -40,7 +40,7 @@
       "datasourceTemplate": "custom.debian-installer",
       "depNameTemplate": "debian-installer",
       "versioningTemplate": "semver",
-      "extractVersionTemplate": "/debian-(?<version>.+)-amd64-netinst\\.iso"
+      "extractVersionTemplate": "debian-(?<version>.+)-amd64-netinst\\.iso"
     }
   ],
   "customDatasources": {
